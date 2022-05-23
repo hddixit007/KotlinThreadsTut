@@ -1,0 +1,107 @@
+package com.example.firstappday1_20thmay
+import kotlinx.coroutines.*
+import kotlin.concurrent.thread
+
+//fun main()
+//{
+//    // main thread
+//    println("The thread starts  "+ Thread.currentThread().name)
+//
+//    // this is a user defined thread for performing any other task
+//    // In kotlin, there are concurrent threads, so this co-routine will not block the execution of main thread. This will run in background and execute after the main thread
+//    GlobalScope.launch {
+//        // Now, this is a co-routine and not a thread.
+//        // With co-routines, if main thread is executed first then it will not wait for co-routine to execute and stops the entire execution of program.
+//        // With threads, main thread waits untill all the threads are executed.
+//        println("The fake thread starts  " + Thread.currentThread().name)
+//
+//        // delay does not block other co-routines unlike sleep
+//        delay(2000)
+//        println("The fake thread ends  " + Thread.currentThread().name)
+//    }
+//
+//    // There are two ways to define a co-routine
+//    // 1. By GlobalScoping that contains delay and another by runBlocking
+//    // But the co-routine inside the runBlocking will block the current thread and in GlobalScoping, it will not block the current thread but suspend it for some time.
+//    runBlocking {
+//        delay(5000)
+//        println("The thread ends  "+ Thread.currentThread().name)
+//    }
+//
+//
+//}
+
+
+
+/*
+* O/P->
+* The thread starts  main
+The fake thread starts  DefaultDispatcher-worker-1
+The fake thread ends  DefaultDispatcher-worker-1
+The thread ends  main
+
+* co-routines are executed on some DefaultDispatcher-worker-1 and not on any thread
+
+ */
+
+
+
+// The other way is
+
+//fun main() = runBlocking {
+//    run {
+//        // main thread
+//        println("The thread starts  " + Thread.currentThread().name)
+//
+//        // this is a user defined thread for performing any other task
+//        // In kotlin, there are concurrent threads, so this co-routine will not block the execution of main thread. This will run in background and execute after the main thread
+//        GlobalScope.launch {
+//            // Now, this is a co-routine and not a thread.
+//            // With co-routines, if main thread is executed first then it will not wait for co-routine to execute and stops the entire execution of program.
+//            // With threads, main thread waits until all the threads are executed.
+//            println("The fake thread starts  " + Thread.currentThread().name)
+//
+//            // delay does not block other co-routines unlike sleep
+//            delay(2000)
+//            println("The fake thread ends  " + Thread.currentThread().name)
+//        }
+//        delay(5000)
+//        println("The thread ends  " + Thread.currentThread().name)
+//    }
+//
+//}
+
+
+
+
+
+
+// Whenever the delay is called, actually the execution goes to suspend state.
+// So we can explicitly define the suspend function.
+
+
+fun main() = runBlocking {
+    run {
+        // main thread
+        println("The thread starts  " + Thread.currentThread().name)
+
+
+        GlobalScope.launch {
+            println("The fake thread starts  " + Thread.currentThread().name)
+
+            // delay does not block other co-routines unlike sleep
+            delay(1000)
+            println("The fake thread ends  " + Thread.currentThread().name)
+        }
+        mySuspend(2000)
+        println("The thread ends  " + Thread.currentThread().name)
+    }
+
+
+}
+
+suspend fun mySuspend(i: Long) {
+
+    delay(i)
+}
+

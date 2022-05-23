@@ -1,0 +1,61 @@
+package com.example.firstappday1_20thmay
+
+import kotlin.concurrent.thread
+
+fun main()
+{
+    // main thread
+
+    println("The thread starts  "+ Thread.currentThread().name)
+
+    // this is a user defined thread for performing any other task
+    // In kotlin, there are concurrent threads, so this thread will not block the execution of main thread. This will run in background and execute after the main thread.
+
+    thread {
+        println("The fake thread starts  " + Thread.currentThread().name)
+        println("The fake thread ends  " + Thread.currentThread().name)
+    }
+    Thread.sleep(5000)
+    println("The thread ends  "+ Thread.currentThread().name)
+
+}
+
+
+
+/*
+* O/P->
+* The thread starts  main
+The fake thread starts  Thread-0
+The fake thread ends  Thread-0
+The thread ends  main
+
+ */
+
+// The main thread will start executing, and fake thread will start executing in different background
+// and will not disturb the min thread.
+// But when you out main thread to sleep then
+// main  start--> fake start--> faker ends--> main ends
+// otherwise,      main  start--> main ends--> fake starts--> fake ends
+// It is concurrent, running in parallel, whichever is ready to get executed is executed.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
